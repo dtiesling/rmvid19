@@ -16,7 +16,7 @@ def index(request):
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
     plot = figure(title='Positive cases by day since beginning of pandemic.',
                   y_range=date_series,
-                  plot_width=500,
+                  plot_width=700,
                   plot_height=len(date_series) * 18,
                   tools="save",
                   x_axis_label="Positive Cases Reported",
