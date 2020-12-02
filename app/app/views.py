@@ -1,9 +1,7 @@
 from datetime import datetime
 
 import pandas as pd
-import time
 from arcgis import GIS
-from bokeh.core.enums import LineCap
 from bokeh.embed import components
 from bokeh.plotting import figure
 from django.shortcuts import render
@@ -18,7 +16,7 @@ def index(request):
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
     plot = figure(title='Positive cases by day since beginning of pandemic.',
                   y_range=date_series,
-                  plot_width=800,
+                  plot_width=500,
                   plot_height=len(date_series) * 18,
                   tools="save",
                   x_axis_label="Positive Cases Reported",
@@ -37,7 +35,7 @@ def index(request):
     line_plot = figure(x_range=date_series[-14:],
                        plot_width=500,
                        plot_height=300,
-                       tools="save,pan",
+                       tools="save",
                        title='Positive cases over the last 14 days.')
     line_plot.xaxis.major_label_orientation = 45
     line_plot.line(x=date_series,
