@@ -15,11 +15,12 @@ def index(request):
     date_series.drop(date_series.tail(1).index, inplace=True)
     case_count_series = dataset['Rancho Mission Viejo']
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
-    plot = figure(title=f'Positive cases by day over the last 60 days -- {case_count_series[-30:].sum()} total cases.',
-                  y_range=date_series[-30:],
+    days_back = 60
+    plot = figure(title=f'Positive cases by day over the last 60 days -- {case_count_series[days_back * -1:].sum()} total cases.',
+                  y_range=date_series[days_back * -1:],
                   plot_width=700,
-                  plot_height=60 * 16,
-                  tools="ywheel_pan",
+                  plot_height=days_back * 20,
+                  tools="save",
                   x_axis_label="Positive Cases Reported",
                   x_axis_location='above',
                   x_minor_ticks=2)
