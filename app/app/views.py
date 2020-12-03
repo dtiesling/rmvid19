@@ -37,11 +37,12 @@ def index(request):
     line_plot = figure(x_range=date_series[-14:],
                        plot_width=500,
                        plot_height=300,
+                       y_axis_label="Total case counts",
                        tools="save",
-                       title=f'Positive cases over the last 14 days -- {case_count_series[-14:].sum()} total cases')
+                       title=f'Total case counts over the last 14 days -- {case_count_series[-14:].sum()} new cases.')
     line_plot.xaxis.major_label_orientation = 45
     line_plot.line(x=date_series,
-                   y=case_count_series)
+                   y=case_count_series.cumsum())
     line_script, line_div = components(line_plot)
 
     context = {'hbar_script': hbar_script,
