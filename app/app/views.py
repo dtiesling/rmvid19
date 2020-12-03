@@ -3,6 +3,7 @@ from datetime import datetime
 import pandas as pd
 from arcgis import GIS
 from bokeh.embed import components
+from bokeh.models import Range1d, FactorRange
 from bokeh.plotting import figure
 from django.shortcuts import render
 
@@ -14,11 +15,11 @@ def index(request):
     date_series.drop(date_series.tail(1).index, inplace=True)
     case_count_series = dataset['Rancho Mission Viejo']
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
-    plot = figure(title='Positive cases by day since beginning of pandemic.',
-                  y_range=date_series,
+    plot = figure(title=f'Positive cases by day over the last 60 days -- {case_count_series[-30:].sum()} total cases.',
+                  y_range=date_series[-30:],
                   plot_width=700,
-                  plot_height=len(date_series) * 18,
-                  tools="save",
+                  plot_height=60 * 16,
+                  tools="ywheel_pan",
                   x_axis_label="Positive Cases Reported",
                   x_axis_location='above',
                   x_minor_ticks=2)
@@ -36,7 +37,7 @@ def index(request):
                        plot_width=500,
                        plot_height=300,
                        tools="save",
-                       title='Positive cases over the last 14 days.')
+                       title=f'Positive cases over the last 14 days -- {case_count_series[-14:].sum()} total cases')
     line_plot.xaxis.major_label_orientation = 45
     line_plot.line(x=date_series,
                    y=case_count_series)
