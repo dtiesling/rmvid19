@@ -8,7 +8,8 @@
     <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.0.min.js" integrity="sha384-rRlSZb4FImflqQNhKcvkZq8b+FqcNFxP9CmCO8Vgo9uNXe6wk6yNMlKMrXn+TjeM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.0.min.js" integrity="sha384-MJyUmyL5f4wPlABPEp4CF5HzMeAPMvzucE8gEGNH15tAWgHFb2hsPNIEkva89XtP" crossorigin="anonymous"></script>
     {{ hbar_script|safe }}
-    {{ line_script|safe }}
+    {{ recent_line_script|safe }}
+    {{ all_line_script|safe }}
 </head>
 
 <body>
@@ -64,8 +65,13 @@
     </div>
 
     <div class="flex flex-wrap justify-center px-10">
-        <div class="px-4">
-            {{ line_div|safe }}
+        <div class="flex flex-col justify-top px-10">
+            <div class="px-4 py-5">
+                {{ recent_line_div|safe }}
+            </div>
+            <div class="px-4 py-5">
+                {{ all_line_div|safe }}
+            </div>
         </div>
         <div class="px-4 order-last xl:order-first">
             {{ hbar_div|safe }}

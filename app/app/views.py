@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 from arcgis import GIS
 from bokeh.embed import components
-from bokeh.models import Range1d, FactorRange
+from bokeh.models import AdaptiveTicker
 from bokeh.plotting import figure
 from django.shortcuts import render
 
@@ -34,21 +34,33 @@ def index(request):
               hatch_alpha=0.0)
     hbar_script, hbar_div = components(plot)
 
-    line_plot = figure(x_range=date_series[-14:],
+    recent_line_plot = figure(x_range=date_series[-14:],
                        plot_width=500,
                        plot_height=300,
                        y_axis_label="Total case counts",
                        tools="save",
                        title=f'Total case counts over the last 14 days -- {case_count_series[-14:].sum()} new cases.')
-    line_plot.xaxis.major_label_orientation = 45
-    line_plot.line(x=date_series,
-                   y=case_count_series.cumsum())
-    line_script, line_div = components(line_plot)
+    recent_line_plot.xaxis.major_label_orientation = 45
+    recent_line_plot.line(x=date_series, y=case_count_series.cumsum())
+    recent_line_script, recent_line_div = components(recent_line_plot)
+
+    all_line_plot = figure(x_range=date_series,
+                           plot_width=500,
+                           plot_height=300,
+                           y_axis_label="Total case counts",
+                           tools="save",
+                           title=f'Total case counts since beginning of pandemic.')
+    all_line_plot.xaxis.visible = False
+    all_line_plot.xaxis.ticker = AdaptiveTicker(desired_num_ticks=10)
+    all_line_plot.line(x=date_series, y=case_count_series.cumsum())
+    all_line_script, all_line_div = components(all_line_plot)
 
     context = {'hbar_script': hbar_script,
                'hbar_div': hbar_div,
-               'line_script': line_script,
-               'line_div': line_div,
+               'recent_line_script': recent_line_script,
+               'recent_line_div': recent_line_div,
+               'all_line_script': all_line_script,
+               'all_line_div': all_line_div,
                'total_cases': case_count_series.sum(),
                'last_updated': datetime.utcnow() - datetime.utcfromtimestamp(
                    data_item.modified / 1000)}
