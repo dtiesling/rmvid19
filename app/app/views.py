@@ -57,6 +57,7 @@ def index(request):
     all_line_script, all_line_div = components(all_line_plot)
 
     context = {'title': os.environ.get('TITLE', 'RMVid-19'),
+               'city_title': os.environ.get('CITY_TITLE', 'Rancho Mission Viejo'),
                'hbar_script': hbar_script,
                'hbar_div': hbar_div,
                'recent_line_script': recent_line_script,
