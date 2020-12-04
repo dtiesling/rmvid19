@@ -29,7 +29,7 @@
         <div class="flex-1 min-w-0">
             <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
                 <span class="block">Welcome to {{ title }}</span>
-                <span class="block text-indigo-600">Coronavirus Case Tracking For {{ city_title }}.</span>
+                <span class="block text-{{ color }}-600">Coronavirus Case Tracking For {{ city_title }}.</span>
             </h2>
             <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
                 <div class="mt-2 flex items-center text-sm text-gray-500">
@@ -65,7 +65,7 @@
                         Information provided by the
                     </div>
                     <div
-                            class="inline-flex items-center h-6 px-2 py-0 rounded-md shadow-sm text-sm font-medium text-gray-600 bg-indigo-100 hover:bg-indigo-600 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            class="inline-flex items-center h-6 px-2 py-0 rounded-md shadow-sm text-sm font-medium text-gray-600 bg-{{ color }}-100 hover:bg-{{ color }}-600 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ color }}-500"
                             id="mobile-menu" aria-haspopup="true">
                         <a href="https://data-ocpw.opendata.arcgis.com/datasets/772f5cdbb99c4f6689ed1460c26f4b05" target="_blank">Orange County Open Data Portal</a>
                     </div>
@@ -80,7 +80,7 @@
                 <div class="flex justify-end">
                     <span class="sm:ml-3">
                         <a href="{{ url }}"
-                                class="inline-flex items-center  text-right h-6 px-4 py-2 w-50 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                class="inline-flex items-center  text-right h-6 px-4 py-2 w-50 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-{{ color }}-600 hover:bg-{{ color }}-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ color }}-500">
                         <!-- Heroicon name: check -->
                         <svg class="-ml-1 mr-2 h-4 w-5" xmlns="http://www.w3.org/2000/svg"
                              fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -89,7 +89,7 @@
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
-                        {{ city.title }}
+                        {{ city }}
                       </a>
                     </span>
                 </div>

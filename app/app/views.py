@@ -12,6 +12,7 @@ from django.shortcuts import render
 def index(request):
     title = os.environ.get('TITLE', 'RMVid-19')
     city = os.environ.get('CITY', 'Rancho Mission Viejo')
+    color = os.environ.get('COLOR', 'indigo')
     data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     date_series = dataset['DateSpecCollect']
@@ -66,6 +67,7 @@ def index(request):
 
     context = {'title': title,
                'city_title': city,
+               'color': color,
                'hbar_script': hbar_script,
                'hbar_div': hbar_div,
                'recent_line_script': recent_line_script,
