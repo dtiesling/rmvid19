@@ -3,6 +3,7 @@ from datetime import datetime
 
 import pandas as pd
 from arcgis import GIS
+from bokeh.colors import RGB
 from bokeh.embed import components
 from bokeh.models import AdaptiveTicker
 from bokeh.plotting import figure
@@ -13,6 +14,9 @@ def index(request):
     title = os.environ.get('TITLE', 'RMVid-19')
     city = os.environ.get('CITY', 'Rancho Mission Viejo')
     color = os.environ.get('COLOR', 'indigo')
+    color_map = {'indigo': RGB(79, 70, 229),
+                 'green': RGB(5, 150, 105),
+                 'pink': RGB(219, 39, 119)}
     data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     date_series = dataset['DateSpecCollect']
@@ -32,7 +36,7 @@ def index(request):
               right=case_count_series,
               left=0,
               height=0.4,
-              color='blue',
+              color=color_map[color],
               fill_alpha=0.5,
               line_cap='round',
               hatch_alpha=0.0)
