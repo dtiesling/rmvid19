@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import pandas as pd
@@ -13,7 +14,7 @@ def index(request):
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     date_series = dataset['DateSpecCollect']
     date_series.drop(date_series.tail(1).index, inplace=True)
-    case_count_series = dataset['Rancho Mission Viejo']
+    case_count_series = dataset[os.environ.get('CITY', 'Rancho Mission Viejo')]
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
     days_back = 60
     plot = figure(title=f'Positive cases by day over the last 60 days -- {case_count_series[days_back * -1:].sum()} total cases.',
@@ -55,7 +56,8 @@ def index(request):
     all_line_plot.line(x=date_series, y=case_count_series.cumsum())
     all_line_script, all_line_div = components(all_line_plot)
 
-    context = {'hbar_script': hbar_script,
+    context = {'title': os.environ.get('TITLE', 'RMVid-19'),
+               'hbar_script': hbar_script,
                'hbar_div': hbar_div,
                'recent_line_script': recent_line_script,
                'recent_line_div': recent_line_div,
