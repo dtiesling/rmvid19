@@ -11,12 +11,25 @@ from django.shortcuts import render
 
 
 def index(request):
-    title = os.environ.get('TITLE', 'RMVid-19')
-    city = os.environ.get('CITY', 'Rancho Mission Viejo')
-    color = os.environ.get('COLOR', 'indigo')
-    color_map = {'indigo': RGB(79, 70, 229),
-                 'green': RGB(5, 150, 105),
-                 'pink': RGB(219, 39, 119)}
+    cities = {
+        'Rancho Mission Viejo': {
+            'title': 'RMVid-19',
+            'color_family': 'indigo',
+            'chart_color': RGB(79, 70, 229),
+            'url': 'https://www.rmvid19.com'},
+        'Coto de Caza': {
+            'title': 'Corona de Caza',
+            'color_family': 'pink',
+            'chart_color': RGB(219, 39, 119),
+            'url': 'https://www.coronadecaza.com'},
+        'San Juan Capistrano': {
+            'title': 'San Juan Covidstrano',
+            'color_family': 'green',
+            'chart_color': RGB(5, 150, 105),
+            'url': 'https://www.sanjuancovidstrano.com'}
+    }
+    city = os.environ.get('CITY', 'San Juan Capistrano')
+    city_info = cities[city]
     data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     date_series = dataset['DateSpecCollect']
@@ -36,7 +49,7 @@ def index(request):
               right=case_count_series,
               left=0,
               height=0.4,
-              color=color_map[color],
+              color=city_info['chart_color'],
               fill_alpha=0.5,
               line_cap='round',
               hatch_alpha=0.0)
@@ -64,14 +77,12 @@ def index(request):
     all_line_script, all_line_div = components(all_line_plot)
 
 
-    other_cities = {'Corona de Caza': 'https://www.coronadecaza.com',
-                    'San Juan Covidstrano': 'https://www.sanjuancovidstrano.com',
-                    'RMVid-19': 'https://www.rmvid19.com'}
-    del other_cities[title]
+    other_cities = cities.copy()
+    del other_cities[city]
 
-    context = {'title': title,
+    context = {'title': city_info['title'],
                'city_title': city,
-               'color': color,
+               'color': city_info['color_family'],
                'hbar_script': hbar_script,
                'hbar_div': hbar_div,
                'recent_line_script': recent_line_script,
