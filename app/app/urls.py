@@ -20,4 +20,5 @@ from app import views
 
 urlpatterns = [
     path('', views.index),
+    path('city_chooser', views.city_chooser),
 ]

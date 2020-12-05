@@ -5,7 +5,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PWXRGSH34Z"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
       gtag('js', new Date());
 
       gtag('config', 'G-PWXRGSH34Z');
@@ -14,102 +18,144 @@
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.0.min.js" integrity="sha384-jtq3UzIrk2TfDZfSNGEN0ICKrRWmtzZSQm6i1Xnd3hY3UfU9m98vuEL7JUv7Iway" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.0.min.js" integrity="sha384-rRlSZb4FImflqQNhKcvkZq8b+FqcNFxP9CmCO8Vgo9uNXe6wk6yNMlKMrXn+TjeM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.0.min.js" integrity="sha384-MJyUmyL5f4wPlABPEp4CF5HzMeAPMvzucE8gEGNH15tAWgHFb2hsPNIEkva89XtP" crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.0.min.js"
+            integrity="sha384-jtq3UzIrk2TfDZfSNGEN0ICKrRWmtzZSQm6i1Xnd3hY3UfU9m98vuEL7JUv7Iway"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.0.min.js"
+            integrity="sha384-rRlSZb4FImflqQNhKcvkZq8b+FqcNFxP9CmCO8Vgo9uNXe6wk6yNMlKMrXn+TjeM"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.0.min.js"
+            integrity="sha384-MJyUmyL5f4wPlABPEp4CF5HzMeAPMvzucE8gEGNH15tAWgHFb2hsPNIEkva89XtP"
+            crossorigin="anonymous"></script>
     {{ hbar_script|safe }}
     {{ recent_line_script|safe }}
     {{ all_line_script|safe }}
+    <script>
+      function cityDropdown() {
+        let element = document.getElementById("chooser-dropdown")
+        if (element.style.display === "none") {
+          element.style.display = "block";
+        } else {
+          element.style.display = "none";
+        }
+      }
+    </script>
 </head>
 
 <body>
 <div>
+    <div class="flex py-4 px-4 justify-end lg:px-8 lg:py-12">
+        <div class="relative inline-block text-left">
+            <div>
+                <button onclick="cityDropdown()" type="button"
+                        class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+                        id="options-menu" aria-haspopup="true" aria-expanded="true">
+                    Other Cities
+                    <svg class="animate-pulse -mr-1 ml-2 h-5 w-5"
+                         xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </button>
+            </div>
 
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-        <div class="flex-1 min-w-0">
-            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                <span class="block">Welcome to {{ title }}</span>
-                <span class="block text-{{ color }}-600">Coronavirus Case Tracking For {{ city_title }}.</span>
-            </h2>
-            <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                <div class="mt-2 flex items-center text-sm text-gray-500">
-                    <!--    Heroicon name: briefcase -->
-                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                         xmlns="http://www.w3.org/2000/svg" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                    Total Positive Cases: {{ total_cases }}
-                </div>
-                <div class="mt-2 flex items-center text-sm text-gray-500">
-                    <!-- Heroicon name: calendar -->
-                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                         fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd"
-                              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                              clip-rule="evenodd"/>
-                    </svg>
-                    Last updated {{ last_updated.days }} days ago
-                </div>
-                <div class="mt-2 flex items-center text-sm text-gray-500">
-                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-                    </svg>
-                    <div class="inline-flex px-1">
-                        Information provided by the
-                    </div>
-                    <div
-                            class="inline-flex items-center h-6 px-2 py-0 rounded-md shadow-sm text-sm font-medium text-gray-600 bg-{{ color }}-100 hover:bg-{{ color }}-600 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ color }}-500"
-                            id="mobile-menu" aria-haspopup="true">
-                        <a href="https://data-ocpw.opendata.arcgis.com/datasets/772f5cdbb99c4f6689ed1460c26f4b05" target="_blank">Orange County Open Data Portal</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid-cols-1 justify-items-end">
-            <div class="text-lg font-medium text-gray-900 text-right">
-                Other cities
-            </div>
-            {% for city, city_info in other_cities.items %}
-                <div class="flex justify-end">
-                    <span class="sm:ml-3">
+            <!--
+              Dropdown panel, show/hide based on dropdown state.
+
+              Entering: "transition ease-out duration-100"
+                From: "transform opacity-0 scale-95"
+                To: "transform opacity-100 scale-100"
+              Leaving: "transition ease-in duration-75"
+                From: "transform opacity-100 scale-100"
+                To: "transform opacity-0 scale-95"
+            -->
+            <div id="chooser-dropdown"
+                 style="display: none"
+                 class="transform opacity-100 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div class="py-1" role="menu" aria-orientation="vertical"
+                     aria-labelledby="options-menu">
+                    {% for city, city_info in other_cities.items %}
                         <a href="{{ city_info.url }}"
-                                class="inline-flex items-center  text-right h-6 px-4 py-2 w-50 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-{{ city_info.color_family }}-600 hover:bg-{{ city_info.color_family }}-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ city_info.color_family }}-500">
-                        <!-- Heroicon name: check -->
-                        <svg class="-ml-1 mr-2 h-4 w-5" xmlns="http://www.w3.org/2000/svg"
-                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        {{ city }}
-                      </a>
-                    </span>
+                           class="block px-4 py-2 text-sm text-{{ city_info.color_family }}-700 hover:bg-gray-100 hover:text-gray-900"
+                           role="menuitem">{{ city }}</a>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
+</div>
+<div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 lg:flex lg:items-center lg:justify-between">
+    <div class="flex-1 min-w-0">
+        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <span class="block">Welcome to {{ title }}</span>
+            <span class="block text-{{ color }}-600">Coronavirus Case Tracking For {{ city_title }}.</span>
+        </h2>
+        <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+            <div class="mt-2 flex items-center text-sm text-gray-500">
+                <!--    Heroicon name: briefcase -->
+                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                     xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                Total Positive Cases: {{ total_cases }}
+            </div>
+            <div class="mt-2 flex items-center text-sm text-gray-500">
+                <!-- Heroicon name: calendar -->
+                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                     fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                          d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                          clip-rule="evenodd"/>
+                </svg>
+                Last updated {{ last_updated.days }} days ago
+            </div>
+            <div class="mt-2 flex items-center text-sm text-gray-500">
+                <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                     xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                </svg>
+                <div class="inline-flex px-1">
+                    Information provided by the
+                </div>
+                <div
+                        class="inline-flex items-center h-6 px-2 py-0 rounded-md shadow-sm text-sm font-medium text-gray-600 bg-{{ color }}-100 hover:bg-{{ color }}-600 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-{{ color }}-500"
+                        id="mobile-menu" aria-haspopup="true">
+                    <a href="https://data-ocpw.opendata.arcgis.com/datasets/772f5cdbb99c4f6689ed1460c26f4b05"
+                       target="_blank">Orange County Open Data Portal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="flex flex-wrap justify-center px-10">
-        <div class="flex flex-col justify-top px-10">
-            <div class="px-4 py-5">
-                {{ recent_line_div|safe }}
-            </div>
-            <div class="px-4 py-5">
-                {{ all_line_div|safe }}
-            </div>
+<div class="flex flex-wrap justify-center px-10">
+    <div class="flex flex-col justify-top px-10">
+        <div class="px-4 py-5">
+            {{ recent_line_div|safe }}
         </div>
-        <div class="px-4 order-last xl:order-first">
-            {{ hbar_div|safe }}
+        <div class="px-4 py-5">
+            {{ all_line_div|safe }}
         </div>
     </div>
+    <div class="px-4 order-last xl:order-first">
+        {{ hbar_div|safe }}
+    </div>
+</div>
 
 
 </div>

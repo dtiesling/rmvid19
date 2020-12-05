@@ -94,3 +94,7 @@ def index(request):
                'last_updated': datetime.utcnow() - datetime.utcfromtimestamp(
                    data_item.modified / 1000)}
     return render(request, 'app/index.html', context)
+
+def city_chooser(request):
+    context = {}
+    return render(request, 'app/city_chooser.html', context)
