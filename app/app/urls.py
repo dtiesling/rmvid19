@@ -20,5 +20,6 @@ from app import views
 
 urlpatterns = [
     path('', views.root),
-    path('<slug:city>', views.city_stats, name='city-stats')
+    path('<slug:city>', views.city_stats, name='city-stats'),
+    path('<slug:city>/', views.city_stats, name='city-stats')
 ]
