@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PWXRGSH34Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+
+      gtag('config', 'G-PWXRGSH34Z');
+    </script>
+
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-2.2.0.min.js"
+            integrity="sha384-jtq3UzIrk2TfDZfSNGEN0ICKrRWmtzZSQm6i1Xnd3hY3UfU9m98vuEL7JUv7Iway"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-2.2.0.min.js"
+            integrity="sha384-rRlSZb4FImflqQNhKcvkZq8b+FqcNFxP9CmCO8Vgo9uNXe6wk6yNMlKMrXn+TjeM"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-2.2.0.min.js"
+            integrity="sha384-MJyUmyL5f4wPlABPEp4CF5HzMeAPMvzucE8gEGNH15tAWgHFb2hsPNIEkva89XtP"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="max-w-7xl mx-auto py-2 px-4 py-12 sm:px-6 lg:px-8 lg:flex lg:items-center lg:justify-between">
+    <div class="flex-1 min-w-0">
+        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+            <span class="block">Welcome to OC Covid Tracker</span>
+            <span class="block text-indigo-600">Choose your city</span>
+        </h2>
+    </div>
+</div>
+
+<div class="flex flex-wrap max-w-7xl mx-auto px-2">
+    {% for city in all_cities %}
+        <a href="https://www.occovidtracker.com/{{ city.split|join:"-" }}"
+           class="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+           role="menuitem">{{ city }}</a>
+    {% endfor %}
+</div>
+</div>
+
+</body>
+</html>

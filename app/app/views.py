@@ -13,7 +13,6 @@ from django.shortcuts import render, redirect
 def root(request):
     return redirect('city-stats', 'rancho-mission-viejo')
 
-
 def city_stats(request, city):
     city = city.replace('-', ' ').title()
     if city.lower() == 'coto de caza':
@@ -82,6 +81,14 @@ def city_stats(request, city):
                    data_item.modified / 1000)}
     return render(request, 'app/city_stats.html', context)
 
+
 def city_chooser(request):
-    context = {}
+    data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
+    dataset = pd.read_csv(data_item.get_data(try_json=False))
+    all_cities = list(dataset.keys())
+    bad_cities = ['DateSpecCollect', 'Unknown', 'Other', 'Total']
+    for bad_city in bad_cities:
+        if bad_city in all_cities:
+            all_cities.remove(bad_city)
+    context = {'all_cities': all_cities}
     return render(request, 'app/city_chooser.html', context)
