@@ -19,6 +19,6 @@ from django.urls import path
 from app import views
 
 urlpatterns = [
-    path('', views.index),
-    path('city_chooser', views.city_chooser),
+    path('', views.root),
+    path('<slug:city>', views.city_stats, name='city-stats')
 ]
