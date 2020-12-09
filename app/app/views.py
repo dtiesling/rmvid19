@@ -16,6 +16,8 @@ def root(request):
 
 def city_stats(request, city):
     city = city.replace('-', ' ').title()
+    if city.lower() == 'coto de caza':
+        city = 'Coto de Caza'
     data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     all_cities = list(dataset.keys())
