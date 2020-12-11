@@ -33,6 +33,7 @@
     {{ hbar_script|safe }}
     {{ recent_line_script|safe }}
     {{ all_line_script|safe }}
+    {{ percentage_total_script|safe }}
     <script>
       function cityDropdown() {
         let element = document.getElementById("chooser-dropdown")
@@ -150,6 +151,9 @@
         </div>
         <div class="px-4 py-5">
             {{ all_line_div|safe }}
+        </div>
+        <div>
+            {{ percentage_total_div|safe }}
         </div>
     </div>
     <div class="px-4 order-last xl:order-first">

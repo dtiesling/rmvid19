@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 
 import pandas as pd
@@ -7,7 +6,50 @@ from bokeh.colors import RGB
 from bokeh.embed import components
 from bokeh.models import AdaptiveTicker
 from bokeh.plotting import figure
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+
+total_population = 3176000
+population = {'Aliso Viejo': 51783,
+              'Anaheim': 352005,
+              'Brea': 43601,
+              'Buena Park': 82421,
+              'Costa Mesa': 113615,
+              'Coto de Caza': 14931,
+              'Cypress': 48958,
+              'Dana Point': 33730,
+              'Fountain Valley': 55814,
+              'Fullerton': 139640,
+              'Garden Grove': 172646,
+              'Huntington Beach': 200641,
+              'Irvine': 282572,
+              'La Habra': 62183,
+              'La Palma': 15568,
+              'Ladera Ranch': 30288,
+              'Laguna Beach': 22991,
+              'Laguna Hills': 31024,
+              'Laguna Niguel': 66266,
+              'Laguna Woods': 16046,
+              'Lake Forest': 85623,
+              'Los Alamitos': 11529,
+              'Midway City': 8374,
+              'Mission Viejo': 95202,
+              'Newport Beach': 85326,
+              'Orange': 139484,
+              'Placentia': 51671,
+              'Rancho Mission Viejo': 36686,
+              'Rancho Santa Margarita': 48325,
+              'Rossmoor': 11160,
+              'San Clemente': 64857,
+              'San Juan Capistrano': 36013,
+              'Santa Ana': 332725,
+              'Seal Beach': 24119,
+              'Silverado': 2154,
+              'Stanton': 38234,
+              'Trabuco Canyon': 21041,
+              'Tustin': 79795,
+              'Villa Park': 5839,
+              'Westminster': 90938,
+              'Yorba Linda': 67787}
 
 
 def _get_covid_info():
@@ -39,6 +81,7 @@ def city_stats(request, city):
     date_series.drop(date_series.tail(1).index, inplace=True)
     case_count_series = dataset[city]
     case_count_series.drop(case_count_series.tail(1).index, inplace=True)
+    total_series = dataset['Total']
 
     # Create a bokeh graph for positive cases by day over the past 2 months.
     days_back = 60
@@ -83,6 +126,27 @@ def city_stats(request, city):
     total_all_time_plot.line(x=date_series, y=case_count_series.cumsum())
     all_line_script, all_line_div = components(total_all_time_plot)
 
+    # Create a bokeh bar graph showing the percentage of total case by day.
+    days_back = 14
+    percentage_series = (dataset[city]/dataset['Total']) * 100
+    percentage_total_plot = figure(title=f'Percentage of new cases reported in OC attributed to {city}.',
+                                   x_range=date_series[-14:],
+                                   plot_width=500,
+                                   plot_height=500,
+                                   y_axis_label='% of new cases reported in the county',
+                                   x_axis_label=f'* {city} is an estimated {round(population[city] / total_population * 100, 2)}% of total OC population.',
+                                   tools='save')
+    percentage_total_plot.vbar(x=date_series[-14:],
+                               top=percentage_series[-14:],
+                               bottom=0,
+                               width=0.4,
+                               color=RGB(79, 70, 229),
+                               fill_alpha=0.5,
+                               line_cap='round',
+                               hatch_alpha=0.0)
+    percentage_total_plot.xaxis.major_label_orientation = 45
+    percentage_total_script, percentage_total_div = components(percentage_total_plot)
+
     context = {'city': city,
                'hbar_script': hbar_script,
                'hbar_div': hbar_div,
@@ -90,6 +154,8 @@ def city_stats(request, city):
                'recent_line_div': recent_line_div,
                'all_line_script': all_line_script,
                'all_line_div': all_line_div,
+               'percentage_total_script': percentage_total_script,
+               'percentage_total_div': percentage_total_div,
                'total_cases': case_count_series.sum(),
                'all_cities': all_cities,
                'last_updated': datetime.utcnow() - datetime.utcfromtimestamp(
