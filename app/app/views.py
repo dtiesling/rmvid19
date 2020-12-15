@@ -56,6 +56,7 @@ def _get_covid_info():
     """Fetches covid case count info from the OC Open Data Portal."""
     data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
     dataset = pd.read_csv(data_item.get_data(try_json=False))
+    dataset.drop(dataset.tail(1).index, inplace=True)
     all_cities = list(dataset.keys())
     bad_cities = ['DateSpecCollect', 'Unknown', 'Other', 'Total']
     for bad_city in bad_cities:
@@ -67,7 +68,19 @@ def _get_covid_info():
 def city_chooser(request):
     """Landing page that renders a list of links to all OC cities."""
     all_cities, data_item, dataset = _get_covid_info()
-    context = {'all_cities': all_cities}
+    raw_cities = []
+    raw_percentages = []
+    for city in all_cities:
+        raw_cities.append(city)
+        raw_percentages.append(dataset[city][-7:].sum() / population[city])
+    normalized_percentages = []
+    for percentage in raw_percentages:
+        normalized = float(percentage) / max(raw_percentages) * 100
+        nearest_5 = 10 * round(normalized / 10)
+        normalized_percentages.append(nearest_5)
+
+    cities = zip(raw_cities, normalized_percentages)
+    context = {'cities': cities}
     return render(request, 'app/city_chooser.html', context)
 
 
@@ -78,9 +91,7 @@ def city_stats(request, city):
         city = 'Coto de Caza'
     all_cities, data_item, dataset = _get_covid_info()
     date_series = dataset['DateSpecCollect']
-    date_series.drop(date_series.tail(1).index, inplace=True)
     case_count_series = dataset[city]
-    case_count_series.drop(case_count_series.tail(1).index, inplace=True)
     total_series = dataset['Total']
 
     # Create a bokeh graph for positive cases by day over the past 2 months.
@@ -146,6 +157,7 @@ def city_stats(request, city):
                                hatch_alpha=0.0)
     percentage_total_plot.xaxis.major_label_orientation = 45
     percentage_total_script, percentage_total_div = components(percentage_total_plot)
+
 
     context = {'city': city,
                'hbar_script': hbar_script,

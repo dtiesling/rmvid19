@@ -43,12 +43,28 @@
 </div>
 
 <div class="flex flex-wrap max-w-7xl mx-auto px-2">
-    {% for city in all_cities %}
+    {% for city, opacity in cities %}
         <a href="https://www.occovidtracker.com/{{ city.split|join:"-" }}"
-           class="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+           class="block px-2 py-2 text-sm text-gray-700 bg-indigo-500 bg-opacity-{{ opacity }} hover:bg-gray-100 hover:text-gray-900"
            role="menuitem">{{ city }}</a>
     {% endfor %}
 </div>
+
+<div class="h-4"></div>
+
+<div class="flex flex-wrap max-w-7xl mx-auto px-2 py-2">
+    <div class="border-2 rounded border-gray-200 h-5 bg-gradient-to-r flex-grow from-white to-indigo-500"></div>
+</div>
+
+<div class="flex flex-wrap max-w-7xl mx-auto px-2">
+    <div class="px-5 text-sm text-gray-700 text-center">Least</div>
+    <div class="flex-grow px-5 text-sm text-gray-700 text-center">Cases per-capita in past week</div>
+    <div class="px-5 text-sm text-gray-700 text-center">Most</div>
+
+</div>
+
+</div>
+
 </div>
 
 </body>
