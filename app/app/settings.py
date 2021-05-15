@@ -119,3 +119,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+ARCGIS_ITEM_ID = os.environ.get('ARCGIS_ITEM_ID', 'f6a6e0804801443987979fc0490d6661_0')
