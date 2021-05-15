@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.conf import settings
 
 import pandas as pd
 from arcgis import GIS
@@ -54,7 +55,7 @@ population = {'Aliso Viejo': 51783,
 
 def _get_covid_info():
     """Fetches covid case count info from the OC Open Data Portal."""
-    data_item = GIS().content.get('772f5cdbb99c4f6689ed1460c26f4b05')
+    data_item = GIS().content.get(settings.ARCGIS_ITEM_ID)
     dataset = pd.read_csv(data_item.get_data(try_json=False))
     dataset.drop(dataset.tail(1).index, inplace=True)
     all_cities = list(dataset.keys())
