@@ -6,5 +6,5 @@ COPY Pipfile.lock /app/Pipfile.lock
 WORKDIR /app
 RUN pipenv sync
 COPY app /app
-RUN mkdir /gunicorn-worker-tmp
-ENTRYPOINT [ "pipenv", "run", "gunicorn", "-b", ":8080", "--worker-tmp-dir", "/gunicorn-worker-tmp", "app.wsgi" ]
+EXPOSE 8080
+ENTRYPOINT [ "pipenv", "run", "gunicorn", "-b", ":8080", "app.wsgi" ]
