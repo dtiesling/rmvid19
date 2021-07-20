@@ -7,4 +7,4 @@ WORKDIR /app
 RUN pipenv sync
 COPY app /app
 RUN mkdir /gunicorn-worker-tmp
-ENTRYPOINT [ "pipenv", "run", "gunicorn", "-b", ":8080", "app.wsgi" ]
+ENTRYPOINT [ "pipenv", "run", "gunicorn", "-b", ":8080", "--worker-tmp-dir", "/gunicorn-worker-tmp", "app.wsgi" ]
