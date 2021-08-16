@@ -7,4 +7,5 @@ WORKDIR /app
 RUN pipenv sync
 COPY app /app
 EXPOSE 8080
-ENTRYPOINT [ "pipenv", "run", "gunicorn", "-b", ":8080", "app.wsgi" ]
+ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
+CMD ["pipenv run gunicorn -b 8080 app.wsgi"]
